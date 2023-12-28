@@ -1,21 +1,24 @@
-import 'dart:convert';
 import 'dart:developer';
 
-import 'package:api_demo/utils/album_response_model.dart';
+import 'package:api_demo/utils/post_response_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static Future<List<AlbumResponseModel>> fetchData() async {
-    List<AlbumResponseModel> albums = [];
+  static Future<List<PostResponseModel>> fetchData() async {
+    List<PostResponseModel> posts = [];
 
-    final response = await http
-        .get(Uri.parse('https://jsonplaceholder.typicode.com/albums?userId=1'));
+    // final response = await http
+    //     .get(Uri.parse('https://jsonplaceholder.typicode.com/posts?userId=1'));
+    final response;
+
+    response =
+        await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
 
     try {
       if (response.statusCode == 200) {
         if (response.body.isNotEmpty) {
-          albums = albumModelFromJson(response.body);
-          log("albums are $albums");
+          posts = postModelFromJson(response.body);
+          log("posts are $posts");
           // final Map<String, dynamic> jsonResponse = json.decode(response.body);
         }
       }
@@ -23,6 +26,6 @@ class ApiService {
       log('Error in loading data $e');
     }
 
-    return albums;
+    return posts;
   }
 }
